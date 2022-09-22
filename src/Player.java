@@ -16,16 +16,18 @@ public class Player {
     public Player(String name, int balance) {
         this.name = name;
         this.balance = balance;
+        balance_label = new JLabel();
     }
 
-    public int pay(Player p, int amount) {
+    public void pay(Player p, int amount) {
         if (balance < amount)
-            return -1;
+            return;
 
         balance -= amount;
         p.balance += amount;
 
-        return 0;
+        updateBalance();
+        p.updateBalance();
     }
 
     public void updateBalance() {

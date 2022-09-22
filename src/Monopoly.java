@@ -2,7 +2,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Monopoly {
     static JPanel panel = new JPanel();
@@ -12,123 +11,6 @@ public class Monopoly {
     public static void main(String[] args) {
         Players.add(new Player("Bank", 100000));
         create_window2(frame);
-    }
-
-    public static void create_window(JFrame frame) {
-        //window
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setSize(960, 540);
-
-
-        //layout
-        panel.setLayout(new BorderLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-
-
-        //balance panel
-        JPanel balance_panel = new JPanel();
-        balance_panel.setLayout(new GridBagLayout());
-        JButton add_player_button = new JButton("Add Player");
-        JTextField player_name_tf = new JTextField();
-        player_name_tf.setPreferredSize(new Dimension(200, 24));
-
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        balance_panel.add(player_name_tf, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        balance_panel.add(add_player_button, gbc);
-
-
-        //add player button listener
-        final int[] grid = {0};
-        int i = 0;
-        add_player_button.addActionListener(actionEvent -> {
-            Players.add(new Player(player_name_tf.getText()));
-            JLabel label = new JLabel(Players.get(i).name);
-            gbc.gridx = 0;
-            gbc.gridy = grid[0];
-            balance_panel.add(label, gbc);
-            panel.revalidate();
-            panel.repaint();
-            grid[0]++;
-
-        });
-
-
-        //transactions panel
-        JPanel tx_panel = new JPanel();
-        tx_panel.setBorder(new EmptyBorder(0, 0, 20, 0 ));
-        tx_panel.setLayout(new GridBagLayout());
-        JLabel tx_label = new JLabel("Transactions:");
-        tx_label.setBorder(new EmptyBorder(0, 10, 10, 0));
-
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        tx_panel.add(tx_label, gbc);
-
-        JTextField tx_player1_tf = new JTextField();
-        tx_player1_tf.setPreferredSize(new Dimension(50, 24));
-        JTextField tx_player2_tf = new JTextField();
-        tx_player2_tf.setPreferredSize(new Dimension(50, 24));
-        JLabel tx_pay_label = new JLabel("pays   ");
-
-        //add text fields and labels for transactions panel
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        tx_panel.add(tx_player1_tf, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        tx_panel.add(tx_pay_label, gbc);
-
-        gbc.gridx = 2;
-        gbc.gridy = 1;
-        tx_panel.add(tx_player2_tf, gbc);
-
-        //deals panel
-        JPanel deals_panel = new JPanel();
-        JLabel deals_label = new JLabel("Deals:");
-        JTextArea deals_ta = new JTextArea();
-        deals_ta.setPreferredSize(new Dimension(200, 400));
-        deals_panel.add(BorderLayout.NORTH, deals_label);
-        deals_panel.add(BorderLayout.SOUTH, deals_ta);
-
-
-        //menu bar
-        JMenuBar mb = new JMenuBar();
-        JMenu mb_file = new JMenu("File");
-        mb.add(mb_file);
-        JMenuItem mi = new JMenuItem("suck dick");
-        mb_file.add(mi);
-
-
-        //add components to panel
-        panel.add(balance_panel, BorderLayout.WEST);
-        panel.add(deals_panel, BorderLayout.EAST);
-        panel.add(tx_panel, BorderLayout.SOUTH);
-
-        /*gbc.gridx = 0;
-        gbc.gridy = 0;
-        panel.add(balance_panel, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 2;
-        panel.add(tx_panel, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 2;
-        panel.add(deals_panel, gbc);*/
-
-
-        //add components to frame
-        frame.getContentPane().add(BorderLayout.NORTH, mb);
-        frame.getContentPane().add(BorderLayout.CENTER, panel);
-        frame.setVisible(true);
     }
 
     /*public static void build_gui() {
@@ -225,14 +107,13 @@ public class Monopoly {
         players_panel.setLayout(new GridBagLayout());
         players_panel.setBorder(BorderFactory.createLineBorder(Color.black));
 
-
-        JTextField player_field = new JTextField(24);
+        JTextField player_field = new JTextField(12);
         JButton add_player_button = new JButton("Add");
         JLabel players_label = new JLabel("Players");
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridwidth = 3;
+        gbc.gridwidth = 2;
         players_panel.add(players_label, gbc);
 
         gbc.gridx = 1;
@@ -313,31 +194,23 @@ public class Monopoly {
         //add player button listener
         final int[] i = {1};
         final int[] gridy = {2};
-        ArrayList<JLabel> balances_label = new ArrayList<>();
 
         add_player_button.addActionListener(actionEvent ->  {
             if(!player_field.getText().isEmpty() && Players.size() < 7) {
                 Players.add(new Player(player_field.getText()));
-                JLabel name = new JLabel(Players.get(i[0]).name);
-                //JLabel balance = new JLabel("$" + Players.get(i[0]).balance.toString());
-
-                balances_label.add(Players.get(i[0]).balance_label);
 
                 gbc.gridy = gridy[0];
                 gbc.gridx = 1;
-                players_panel.add(balances_label.get(i[0] - 1), gbc);
+                players_panel.add(Players.get(i[0]).balance_label, gbc);
 
                 gbc.gridx = 0;
-                players_panel.add(name, gbc);
+                players_panel.add(Players.get(i[0]).name_label, gbc);
 
                 tx_player1.addItem(Players.get(i[0]));
                 tx_player2.addItem(Players.get(i[0]));
 
                 panel.revalidate();
                 panel.repaint();
-
-                tx_panel.revalidate();
-                tx_panel.repaint();
 
                 gridy[0]++;
                 i[0]++;
@@ -347,19 +220,18 @@ public class Monopoly {
 
         //confirm transaction button listener
         tx_confirm_button.addActionListener(actionEvent -> {
-            Player temp = (Player) tx_player1.getSelectedItem();
-            Player temp2 = (Player) tx_player2.getSelectedItem();
+            if (!tx_field.getText().isEmpty()) {
+                Player temp = (Player) tx_player1.getSelectedItem();
+                Player temp2 = (Player) tx_player2.getSelectedItem();
 
-            assert temp != null;
-            assert temp2 != null;
+                assert temp != null;
+                assert temp2 != null;
 
-            temp.pay(temp2, Integer.parseInt(tx_field.getText()));
-            temp.updateBalance();
-            temp2.updateBalance();
-            System.out.println(temp.balance);
+                temp.pay(temp2, Integer.parseInt(tx_field.getText()));
 
-            players_panel.revalidate();
-            players_panel.repaint();
+                players_panel.revalidate();
+                players_panel.repaint();
+            }
         });
 
         panel.add(players_panel, new Dimension(0, 0));
